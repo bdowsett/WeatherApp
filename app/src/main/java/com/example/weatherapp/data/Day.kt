@@ -1,5 +1,10 @@
 package com.example.weatherapp.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+
+@Parcelize
 data class Day(
     val avghumidity: Double,
     val avgtemp_c: Double,
@@ -21,4 +26,4 @@ data class Day(
     val totalprecip_mm: Double,
     val totalsnow_cm: Double,
     val uv: Double
-)
+): Parcelable

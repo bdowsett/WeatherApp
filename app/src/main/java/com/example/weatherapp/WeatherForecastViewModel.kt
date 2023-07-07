@@ -9,7 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.Forecastday
 import com.example.weatherapp.data.WeatherData
 import com.example.weatherapp.data.WeatherRepositoryImpl
+import com.example.weatherapp.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,15 +20,20 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherForecastViewModel @Inject constructor(private val weatherRepo: WeatherRepositoryImpl): ViewModel() {
 
+    private val _selectedDay = MutableLiveData<Forecastday>()
+    val selectedDay: MutableLiveData<Forecastday>
+        get() = _selectedDay
+
     private val _weatherData = MutableLiveData<WeatherData>()
     val weatherData: MutableLiveData<WeatherData>
         get() = _weatherData
 
-    private val _navigateToDetails = MutableLiveData<Forecastday>()
-    val navigateToDetails: LiveData<Forecastday> = _navigateToDetails
+    init{
+        getWeather()
+    }
 
 
-    fun getWeather(){
+    private fun getWeather(){
         viewModelScope.launch {
             val response = weatherRepo.getWeather()
 
@@ -36,9 +44,8 @@ class WeatherForecastViewModel @Inject constructor(private val weatherRepo: Weat
         }
     }
 
-    fun navigateToDetails(forecast: Forecastday){
-           _navigateToDetails.value = forecast
-
+    fun setSelectedDay(forecastday: Forecastday){
+        selectedDay.value = forecastday
     }
 
 }
