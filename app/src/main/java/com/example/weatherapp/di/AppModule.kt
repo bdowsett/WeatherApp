@@ -1,6 +1,9 @@
 package com.example.weatherapp.di
 
 import com.example.weatherapp.data.WeatherApi
+import com.example.weatherapp.data.WeatherRepositoryImpl
+import com.example.weatherapp.repository.WeatherRepository
+import com.example.weatherapp.util.DateProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,6 +44,18 @@ object AppModule {
             .client(okHttpClient)
             .build()
             .create(WeatherApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesWeatherRepo(api: WeatherApi): WeatherRepository{
+        return WeatherRepositoryImpl(api)
+    }
+
+    @Singleton
+    @Provides
+    fun providesDateProvider(): DateProvider{
+        return DateProvider()
     }
 
 }

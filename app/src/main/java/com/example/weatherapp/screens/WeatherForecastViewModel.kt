@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.Forecastday
 import com.example.weatherapp.data.WeatherRepositoryImpl
+import com.example.weatherapp.repository.WeatherRepository
 import com.example.weatherapp.util.DateProvider
 import com.example.weatherapp.util.ForecastScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class WeatherForecastViewModel @Inject constructor(private val weatherRepo: WeatherRepositoryImpl) :
+class WeatherForecastViewModel @Inject constructor(private val weatherRepo: WeatherRepository, private val dateProvider: DateProvider) :
     ViewModel() {
 
     lateinit var selectedDay: Forecastday
@@ -52,6 +53,6 @@ class WeatherForecastViewModel @Inject constructor(private val weatherRepo: Weat
     }
 
     fun getDayandDate(date: String): String? {
-        return DateProvider().parseStringToDayAndDate(date)
+        return dateProvider.parseStringToDayAndDate(date)
     }
 }
