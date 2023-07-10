@@ -1,26 +1,27 @@
 package com.example.weatherapp.util
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.text.ParseException
+import java.text.SimpleDateFormat
 
 class DateProvider {
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun calculateDayOfYearAndMonthDay(dateString: String): Pair<Int, Int>? {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    fun parseStringToDayAndDate(dateString: String): String? {
+        val pattern = "yyyy-MM-dd"
+        val formatter = SimpleDateFormat(pattern)
+        formatter.isLenient = false
         val date = try {
-            LocalDate.parse(dateString, formatter)
-        } catch (e: Exception) {
-            return null // Return null if the parsing fails
+            formatter.parse(dateString)
+        } catch (e: ParseException) {
+           return null
         }
 
-        val dayOfYear = date.dayOfYear
-        val monthDay = date.dayOfMonth
-
-        return Pair(dayOfYear, monthDay)
+        return date?.let {
+            val dayFormatter = SimpleDateFormat("EEEE")
+            val dateFormatter = SimpleDateFormat("MMMM d")
+            val dayOfWeek = dayFormatter.format(it)
+            val date = dateFormatter.format(it)
+            "$dayOfWeek, $date"
+        }
     }
 
 }

@@ -1,7 +1,5 @@
-package com.example.weatherapp.presentation
+package com.example.weatherapp.screens
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +15,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -30,12 +27,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.weatherapp.R
-import com.example.weatherapp.Screen
-import com.example.weatherapp.WeatherForecastViewModel
+import com.example.weatherapp.navigation.Screen
 import com.example.weatherapp.data.Forecastday
+import com.example.weatherapp.data.WeatherData
 import com.example.weatherapp.util.ForecastScreenState
+import dagger.hilt.android.components.ViewWithFragmentComponent
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ForecastScreen(
     viewModel: WeatherForecastViewModel,
@@ -52,28 +49,12 @@ fun ForecastScreen(
                 CircularProgressIndicator()
             }
         }
-        is ForecastScreenState.Success -> {
-            val data = state.data
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = "${data.location.name} 7 day forecast", fontSize = 18.sp, modifier = Modifier.padding(bottom = 12.dp))
-                LazyColumn {
-                    items(data.forecast.forecastday) { it ->
-                        Column() {
-                            ForecastItem(forecastDay = it, viewModel = viewModel ) {
-                                viewModel.setSelectedDay(it)
-                                navController.navigate(route = Screen.WeatherDetail.route)
-                            }
-                        }
-                    }
-                }
-            }
+        is ForecastScreenState.Success -> {
+            ForecastList(data = state.data, viewModel = viewModel, navController = navController)
+
         }
+
         is ForecastScreenState.Error -> {
             Text(text = state.message)
         }
@@ -81,13 +62,44 @@ fun ForecastScreen(
 }
 
 @Composable
-WeatherResultScreen()
-
+fun ForecastList(
+    data: WeatherData,
+    viewModel: WeatherForecastViewModel,
+    navController: NavController
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "${data.location.name} 7 day forecast",
+            fontSize = 18.sp,
+            modifier = Modifier.padding(bottom = 12.dp)
+        )
+        LazyColumn {
+            items(data.forecast.forecastday) { it ->
+                Column() {
+                    ForecastItem(forecastDay = it, viewModel = viewModel) {
+                        viewModel.selectedDay = it
+                        navController.navigate(route = Screen.WeatherDetail.route)
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
-fun ForecastItem(forecastDay: Forecastday, viewModel: WeatherForecastViewModel, onItemClick: (Forecastday) -> Unit) {
+fun ForecastItem(
+    forecastDay: Forecastday,
+    viewModel: WeatherForecastViewModel,
+    onItemClick: (Forecastday) -> Unit
+) {
     Card(shape = RectangleShape, elevation = CardDefaults.cardElevation(
-        defaultElevation = 5.dp),
+        defaultElevation = 5.dp
+    ),
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
@@ -103,7 +115,10 @@ fun ForecastItem(forecastDay: Forecastday, viewModel: WeatherForecastViewModel, 
                 contentScale = ContentScale.Crop
             )
             Column(Modifier.padding(start = 8.dp)) {
-                Text(text = forecastDay.date)
+                val dayDate = viewModel.getDayandDate(forecastDay.date)
+                if (dayDate != null) {
+                    Text(text = dayDate)
+                }
                 Text(text = forecastDay.day.condition.text)
             }
         }

@@ -1,13 +1,13 @@
-package com.example.weatherapp
+package com.example.weatherapp.navigation
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.weatherapp.presentation.ForecastScreen
-import com.example.weatherapp.presentation.WeatherDetailScreen
+import com.example.weatherapp.screens.WeatherForecastViewModel
+import com.example.weatherapp.screens.ForecastScreen
+import com.example.weatherapp.screens.WeatherDetailScreen
 
 @Composable
 fun navSetUp(

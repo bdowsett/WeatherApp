@@ -1,7 +1,5 @@
-package com.example.weatherapp.presentation
+package com.example.weatherapp.screens
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,37 +11,33 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.weatherapp.R
-import com.example.weatherapp.WeatherForecastViewModel
 import com.example.weatherapp.data.Forecastday
 import com.example.weatherapp.data.Hour
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun WeatherDetailScreen(viewModel: WeatherForecastViewModel = hiltViewModel()) {
 
-    val data = viewModel.selectedDay.value
+    val data = viewModel.selectedDay
 
-    Column(modifier = Modifier
-        .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, ) {
-        if (data != null) {
-            Weather(day = data, modifier = Modifier)
-            Row() {
-                LazyRow {
-                    items(data.hour) {
-                        HourScreen(it)
-                    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Weather(day = data, modifier = Modifier, viewModel = viewModel)
+        Row() {
+            LazyRow {
+                items(data.hour) {
+                    HourScreen(it)
                 }
             }
         }
@@ -52,10 +46,17 @@ fun WeatherDetailScreen(viewModel: WeatherForecastViewModel = hiltViewModel()) {
 
 @Composable
 fun HourScreen(hour: Hour) {
-    Card(modifier = Modifier.padding(4.dp), shape = RectangleShape, elevation = CardDefaults.cardElevation(
-        defaultElevation = 5.dp
-    )) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(15.dp)) {
+    Card(
+        modifier = Modifier.padding(4.dp),
+        shape = RectangleShape,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 5.dp
+        )
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(15.dp)
+        ) {
             Text(hour.time)
             AsyncImage(
                 model = "https:${hour.condition.icon}",
@@ -67,14 +68,22 @@ fun HourScreen(hour: Hour) {
                     .padding(4.dp),
             )
             Text(hour.condition.text, fontSize = 18.sp)
+            Text(text = "${hour.temp_c}\u2103")
         }
     }
 }
 
 
-@Composable fun Weather(day: Forecastday, modifier: Modifier){
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier.padding(vertical = 12.dp)) {
-        Text(day.date)
+@Composable
+fun Weather(day: Forecastday, modifier: Modifier, viewModel: WeatherForecastViewModel) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.padding(vertical = 12.dp)
+    ) {
+        val dayDate = viewModel.getDayandDate(day.date)
+        if (dayDate != null) {
+            Text(dayDate)
+        }
         Text(day.day.condition.text)
         AsyncImage(
             model = "https:${day.day.condition.icon}",
@@ -83,7 +92,7 @@ fun HourScreen(hour: Hour) {
                 .size(80.dp)
                 .padding()
         )
-        Text("max temp ${day.day.maxtemp_c}")
+        Text("max temp ${day.day.maxtemp_c}℃")
     }
 }
     

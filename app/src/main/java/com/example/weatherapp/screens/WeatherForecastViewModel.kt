@@ -1,4 +1,4 @@
-package com.example.weatherapp
+package com.example.weatherapp.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -15,11 +15,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class WeatherForecastViewModel @Inject constructor(private val weatherRepo: WeatherRepositoryImpl): ViewModel() {
+class WeatherForecastViewModel @Inject constructor(private val weatherRepo: WeatherRepositoryImpl) :
+    ViewModel() {
 
-    private val _selectedDay = MutableLiveData<Forecastday>()
-    val selectedDay: MutableLiveData<Forecastday>
-        get() = _selectedDay
+    lateinit var selectedDay: Forecastday
 
     private val _weatherData = MutableLiveData<ForecastScreenState>()
     val weatherData: MutableLiveData<ForecastScreenState>
@@ -35,10 +34,12 @@ class WeatherForecastViewModel @Inject constructor(private val weatherRepo: Weat
                     if (data != null) {
                         _weatherData.value = ForecastScreenState.Success(data)
                     } else {
-                        _weatherData.value = ForecastScreenState.Error("Failed to retrieve weather data")
+                        _weatherData.value =
+                            ForecastScreenState.Error("Failed to retrieve weather data")
                     }
                 } else {
-                    _weatherData.value = ForecastScreenState.Error("Failed to retrieve weather data")
+                    _weatherData.value =
+                        ForecastScreenState.Error("Failed to retrieve weather data")
                 }
             } catch (e: Exception) {
                 _weatherData.value = ForecastScreenState.Error("An error occurred: ${e.message}")
@@ -46,18 +47,11 @@ class WeatherForecastViewModel @Inject constructor(private val weatherRepo: Weat
         }
     }
 
-    init{
+    init {
         getWeather()
     }
 
-
-    fun setSelectedDay(forecastday: Forecastday){
-        selectedDay.value = forecastday
+    fun getDayandDate(date: String): String? {
+        return DateProvider().parseStringToDayAndDate(date)
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getDayandDate(date: String): Pair<Int, Int>? {
-        return DateProvider().calculateDayOfYearAndMonthDay(date)
-    }
-
 }
