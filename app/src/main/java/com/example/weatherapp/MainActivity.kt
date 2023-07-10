@@ -24,18 +24,21 @@ import com.example.weatherapp.ui.theme.WeatherAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setContent {
-            navController = rememberNavController()
-            navSetUp(navController = navController)
+
+            setContent {
+                WeatherAppTheme() {
+                navController = rememberNavController()
+                navSetUp(navController = navController)
+            }
+
+
         }
-
-
     }
 }
 
