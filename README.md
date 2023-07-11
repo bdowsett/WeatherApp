@@ -17,7 +17,7 @@ To run the app you will need to create an account at https://www.weatherapi.com 
 }`
 
 ## Approach 
-This is my first app using Compose and Compose Navigation, given more time I would restructure the composables to just take uiState and uiEvents as params, as it is I am passing viewmodel and navcontroller
+This is my first app using Compose and Compose Navigation, given more time I would restructure the composables to just take uiState and uiEvents as params, as it is I am passing viewmodel and navcontroller and this isn't the cleanest approach. I would also spend further time on finessing the UI.
 
 ## Project Structure
 
