@@ -1,14 +1,14 @@
 package com.example.weatherapp.testutils
 
 
-import com.example.weatherapp.data.Astro
-import com.example.weatherapp.data.Condition
-import com.example.weatherapp.data.Day
-import com.example.weatherapp.data.Forecast
-import com.example.weatherapp.data.Forecastday
-import com.example.weatherapp.data.Hour
-import com.example.weatherapp.data.Location
-import com.example.weatherapp.data.WeatherData
+import com.example.weatherapp.data.model.Astro
+import com.example.weatherapp.data.model.Condition
+import com.example.weatherapp.data.model.Day
+import com.example.weatherapp.data.model.Forecast
+import com.example.weatherapp.data.model.Forecastday
+import com.example.weatherapp.data.model.Hour
+import com.example.weatherapp.data.model.Location
+import com.example.weatherapp.data.model.WeatherData
 
 
 object MockData {

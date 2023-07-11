@@ -1,12 +1,9 @@
 package com.example.weatherapp.screens
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.data.Forecastday
-import com.example.weatherapp.data.WeatherRepositoryImpl
+import com.example.weatherapp.data.model.Forecastday
 import com.example.weatherapp.repository.WeatherRepository
 import com.example.weatherapp.util.DateProvider
 import com.example.weatherapp.util.ForecastScreenState

@@ -1,5 +1,6 @@
 package com.example.weatherapp.data
 
+import com.example.weatherapp.data.model.WeatherData
 import com.example.weatherapp.repository.WeatherRepository
 import retrofit2.Response
 import javax.inject.Inject

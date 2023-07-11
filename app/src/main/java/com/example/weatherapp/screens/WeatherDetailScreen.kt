@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.weatherapp.R
-import com.example.weatherapp.data.Forecastday
-import com.example.weatherapp.data.Hour
+import com.example.weatherapp.data.model.Forecastday
+import com.example.weatherapp.data.model.Hour
 
 @Composable
 fun WeatherDetailScreen(viewModel: WeatherForecastViewModel = hiltViewModel()) {

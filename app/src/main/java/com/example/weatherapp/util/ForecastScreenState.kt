@@ -1,6 +1,6 @@
 package com.example.weatherapp.util
 
-import com.example.weatherapp.data.WeatherData
+import com.example.weatherapp.data.model.WeatherData
 
 sealed class ForecastScreenState
 {

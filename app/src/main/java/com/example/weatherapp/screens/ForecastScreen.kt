@@ -28,10 +28,9 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.weatherapp.R
 import com.example.weatherapp.navigation.Screen
-import com.example.weatherapp.data.Forecastday
-import com.example.weatherapp.data.WeatherData
+import com.example.weatherapp.data.model.Forecastday
+import com.example.weatherapp.data.model.WeatherData
 import com.example.weatherapp.util.ForecastScreenState
-import dagger.hilt.android.components.ViewWithFragmentComponent
 
 @Composable
 fun ForecastScreen(

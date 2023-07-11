@@ -1,7 +1,6 @@
 package com.example.weatherapp.repository
 
-import com.example.weatherapp.data.WeatherData
-import com.example.weatherapp.data.model.WeatherDto
+import com.example.weatherapp.data.model.WeatherData
 import retrofit2.Response
 
 interface WeatherRepository {

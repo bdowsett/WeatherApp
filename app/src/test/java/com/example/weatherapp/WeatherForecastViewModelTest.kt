@@ -1,8 +1,6 @@
 package com.example.weatherapp
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.weatherapp.data.WeatherData
-import com.example.weatherapp.data.WeatherRepositoryImpl
 import com.example.weatherapp.repository.WeatherRepository
 import com.example.weatherapp.screens.WeatherForecastViewModel
 import com.example.weatherapp.testutils.CoroutinesTestRule
@@ -11,6 +9,7 @@ import com.example.weatherapp.util.DateProvider
 import com.example.weatherapp.util.ForecastScreenState
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -48,4 +47,18 @@ class WeatherForecastViewModelTest {
         assertEquals(ForecastScreenState.Success(weatherData), viewModel.weatherData.value)
 
         }
+
+
+    @Test
+    fun `getWeather method should update LiveData onFailure`() = runTest {
+        val errorMessage = "Failed to retrieve weather data"
+
+        given(weatherRepository.getWeather()).willReturn(Response.error(404, errorMessage.toResponseBody()))
+
+        viewModel.getWeather()
+
+        assertEquals(ForecastScreenState.Error("Failed to retrieve weather data"), viewModel.weatherData.value)
+
+    }
+
 }
