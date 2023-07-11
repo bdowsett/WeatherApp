@@ -16,6 +16,9 @@ To run the app you will need to create an account at https://www.weatherapi.com 
     const val API_KEY = ""
 }`
 
+## Approach 
+This is my first app using Compose and Compose Navigation, given more time I would restructure the composables to just take uiState and uiEvents as params, as it is I am passing viewmodel and navcontroller
+
 ## Project Structure
 
 ```├── README.md
